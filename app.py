@@ -1,11 +1,9 @@
+from flask import Flask, render_template_string
 import os
-from flask import Flask
 app = Flask(__name__)
-
+HTML = """<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Ban Lushi Bot</title><style>body{font-family:Arial;background:#0a0a0a;color:#fff;padding:15px}h1{color:#00ff88;text-align:center} .card{background:#1a1a1a;padding:20px;border-radius:15px;margin:10px 0;border:1px solid #00ff88} textarea{width:100%;height:100px;background:#000;color:#fff;border:1px solid #333;border-radius:10px;padding:10px;font-size:16px} select,button{width:100%;padding:15px;margin:5px 0;border-radius:10px;font-size:16px;font-weight:bold} select{background:#222;color:#fff;border:1px solid #444} button{background:#00ff88;color:#000;border:none} .result{background:#000;padding:15px;border-radius:10px;margin-top:10px;border:1px solid #00ff88;min-height:50px}</style></head><body><h1>🌍 BAN LUSHI BOT<br>CDT LUBUMBASHI 24h/24</h1><div class='card'><textarea id='input' placeholder='Tape ton texte ici...'></textarea><select id='from'><option value='fr'>FR</option><option value='en'>EN</option><option value='es'>ES</option><option value='pt'>PT</option><option value='tr'>TR</option><option value='zh'>ZH</option></select><select id='to'><option value='en'>EN</option><option value='fr'>FR</option><option value='es'>ES</option><option value='pt'>PT</option><option value='tr'>TR</option><option value='zh'>ZH</option></select><button onclick='translate()'>🔥 TRADUIRE</button><div class='result' id='result'>Résultat ici...</div></div><script>async function translate(){let text=document.getElementById('input').value;let from=document.getElementById('from').value;let to=document.getElementById('to').value;if(!text){document.getElementById('result').innerText='Tape un texte!';return;}document.getElementById('result').innerText='Traduction...';try{let res=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`);let data=await res.json();document.getElementById('result').innerText=data.responseData.translatedText;}catch(e){document.getElementById('result').innerText='Erreur, réessaie!';}}</script></body></html>"""
 @app.route('/')
-def home():
-    return "<h1 style='text-align:center;background:black;color:lime;padding:50px'>🔥 CDT ETERNEL 24h/24 🔥<br><br>BAN LUSHI BOT ONLINE<br><br>✅ PUBLIC</h1>"
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))
-    app.run(host='0.0.0.0', port=port)
+def home(): return render_template_string(HTML)
+@app.route('/health')
+def health(): return "OK LIVE!"
+if __name__ == '__main__': port=int(os.environ.get('PORT',10000)); app.run(host='0.0.0.0',port=port)
